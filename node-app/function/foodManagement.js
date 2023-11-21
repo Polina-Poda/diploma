@@ -4,6 +4,17 @@ class FoodManagment{
     async addCategory(req, res) {
         try {
             const categoryName = req.params.categoryName;
+
+             // Перевірте, чи існує категорія з вказаною назвою
+    const existingCategory = await Category.findOne({ name: categoryName });
+          if (existingCategory) {
+            // Категорія вже існує, виведемо помилку
+            return res.status(400).json({
+              status: "error",
+              message: "Категорія з такою назвою вже існує",
+            });
+          }
+
             const newCategory = new Category({ name: categoryName });
             const savedCategory = await newCategory.save();
             
@@ -27,34 +38,50 @@ class FoodManagment{
               const weight = req.params.weight;
               const calories = req.params.calories;
           
-              const pizzaCategory = await Category.findOne({ name: categoryName });
+              
+
+              const сategory = await Category.findOne({ name: categoryName });
           
-              if (!pizzaCategory) {
-                console.error('Категорія "Піца" не знайдена');
+              if (!сategory) {
+                console.error('Категорія не знайдена');
                 return res.status(404).json({
                   status: "error",
                   message: "Категорія не знайдена",
                 });
               }
+
+                 // Перевірте, чи існує страва з вказаною назвою в межах вибраної категорії
+    // Перевірте, чи існує страва з вказаною назвою взагалі
+const existingMenuItemByName = await MenuItem.findOne({
+  name: name,
+});
+
+    if (existingMenuItemByName) {
+      // Страва вже існує в межах вибраної категорії, виведемо помилку
+      return res.status(400).json({
+        status: "error",
+        message: "Страва з такою назвою вже існує",
+      });
+    }
           
-              // Тепер маємо ідентифікатор категорії "Піца"
-              const pizzaCategoryId = pizzaCategory._id;
+              // Тепер маємо ідентифікатор категорії 
+              const сategoryId = сategory._id;
           
-              // Створіть новий вид піци та призначте йому категорію "Піца"
-              const newPizzaVariety = new MenuItem({
+              // Створіть новий вид піци та призначте йому категорію 
+              const newCategoryVariety = new MenuItem({
                 name: name,
                 weight: weight,
                 calories: calories,
-                category: pizzaCategoryId, // Встановлюємо категорію "Піца" за допомогою ідентифікатора
+                category: сategoryId, // Встановлюємо категорію за допомогою ідентифікатора
               });
           
               // Збережіть страву в базу даних за допомогою `await`
-              const savedPizzaVariety = await newPizzaVariety.save();
+              const savedCategoryVariety = await newCategoryVariety.save();
           
-              console.log('Піца додана:', savedPizzaVariety);
+              console.log('Піца додана:', savedCategoryVariety);
               return res.status(201).json({
                 status: "success",
-                pizzaVariety: savedPizzaVariety,
+                categoryVariety: savedCategoryVariety,
               });
             } catch (error) {
               console.error(error);
