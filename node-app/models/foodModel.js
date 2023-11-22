@@ -14,6 +14,8 @@ const menuItemSchema = new mongoose.Schema({
   name: String,
   weight: Number,
   calories: Number,
+  price: Number,
+  description: String,
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
