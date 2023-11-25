@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 // Схема для користувачів
-const users = new mongoose.Schema({
-    userName: String,
+const workers = new mongoose.Schema({
+   workerName: String,
     email: {
       type: String,
       validate: {
@@ -18,5 +18,5 @@ const users = new mongoose.Schema({
   });
   
   // Модель категорій користувачів
-  const Users = mongoose.model('Users', users, 'users');
-module.exports = { Users };
+  const Worker = mongoose.model('Worker', workers, 'worker');
+module.exports = { Worker };

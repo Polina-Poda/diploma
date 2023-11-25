@@ -17,5 +17,5 @@ router.post('/deleteMenuItem/:itemId', deleteMenuItem.deleteMenuItem)
 router.post('/deleteCategoryAndItems/:categoryId', deleteCategoryAndItems.deleteCategoryAndItems)
 router.post('/editMenuItem/:itemId', editMenuItem.editMenuItem)
 router.post('/editCategory/:categoryId/:name', editCategory.editCategory)
-router.post('/selfRegistration', selfRegistrationUser.selfRegistrationUser)
+router.post('/selfRegistrationUser', selfRegistrationUser.selfRegistrationUser)
 module.exports = router
