@@ -3,7 +3,7 @@ const { Category } = require("../models/foodModel");
 async function editCategory(req, res) {
     try {
         const categoryId = req.params.categoryId; // Отримайте ідентифікатор страви з запиту
-        const name = req.params.name; // Отримайте ідентифікатор страви з запиту
+        const name = req.params.name; 
   
         // Знайдіть страву за ідентифікатором
         const existingCategory = await Category.findById(categoryId);
