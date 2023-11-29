@@ -25,8 +25,6 @@ async function selfRegistrationUser(req, res) {
 
       const savedNewUser = await newUser.save();
 
-      console.log("User added:", savedNewUser);
-
     return res.status(201).json({
       status: "success",
       data: savedNewUser,

@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 
-// Схема для користувачів
+const validRoles = ['admin', 'waiter', 'cook'];
+// Схема для робітників
 const workers = new mongoose.Schema({
-   workerName: String,
+   workerFirstName: String,
+   workerSecondName: String,
     email: {
       type: String,
       validate: {
@@ -14,9 +16,18 @@ const workers = new mongoose.Schema({
       }
     },
     hashPassword: String,
-    role:String
+    role: {
+      type: String,
+      validate: {
+        validator: function(value) {
+          // Перевірте, чи значення входить до допустимого переліку ролей
+          return validRoles.includes(value);
+        },
+        message: 'Invalid role'
+      }
+    }
   });
   
-  // Модель категорій користувачів
-  const Worker = mongoose.model('Worker', workers, 'worker');
-module.exports = { Worker };
+  // Модель категорій робітників
+  const Workers = mongoose.model('Worker', workers, 'workers');
+module.exports = { Workers };

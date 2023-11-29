@@ -9,6 +9,7 @@ const deleteCategoryAndItems = require('./function/deleteCategoryAndItems')
 const editMenuItem = require('./function/editMenuItem')
 const editCategory = require('./function/editCategory')
 const selfRegistrationUser = require('./function/selfRegistrationUser')
+const selfRegistrationWorker = require('./function/selfRegistrationWorker')
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -18,4 +19,5 @@ router.post('/deleteCategoryAndItems/:categoryId', deleteCategoryAndItems.delete
 router.post('/editMenuItem/:itemId', editMenuItem.editMenuItem)
 router.post('/editCategory/:categoryId/:name', editCategory.editCategory)
 router.post('/selfRegistrationUser', selfRegistrationUser.selfRegistrationUser)
+router.post('/selfRegistrationWorker', selfRegistrationWorker.selfRegistrationWorker)
 module.exports = router
