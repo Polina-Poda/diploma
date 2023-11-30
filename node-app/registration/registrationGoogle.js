@@ -21,10 +21,12 @@ async function googleRegistration(req, res) {
 
     if (email) {
       console.log("login", profileInfo.email);
-      login(profileInfo);
+      const response = await login(profileInfo);
+      return res.status(200).json(response);
     } else {
       console.log("register", profileInfo.email);
-      registration(profileInfo);
+      const response = await registration(profileInfo);
+      return res.status(200).json(response);
     }
   } catch (error) {
     console.error(error);
@@ -62,10 +64,8 @@ async function login(profileInfo) {
     process.env.LINK_TOKEN,
     { expiresIn: "72h" }
   );
-    return res.status(200).json({
-        status: "success",
-        token: token,
-    });
+  const response = { status: "success", token: token };
+  return response
 }
 
 async function registration(profileInfo) {
@@ -79,10 +79,8 @@ async function registration(profileInfo) {
     process.env.LINK_TOKEN,
     { expiresIn: "72h" }
   );
-    return res.status(200).json({
-        status: "success",
-        token: token,
-    });
+  const response = { status: "success", token: token };
+  return response
 }
 
 module.exports.googleRegistration = googleRegistration;
