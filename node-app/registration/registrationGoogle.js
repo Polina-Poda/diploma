@@ -2,7 +2,6 @@ const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const dotenv = require("dotenv");
-const con = require("../db");
 const axios = require("axios");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
