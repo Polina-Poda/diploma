@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const port = process.env.PORT || 4000;
 const router = require('./router');
-
+res.header('Access-Control-Allow-Credentials', 'true');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
