@@ -64,7 +64,7 @@ async function login(profileInfo) {
     process.env.LINK_TOKEN,
     { expiresIn: "72h" }
   );
-  const response = { status: "success", token: token };
+  const response = { status: "success", token: token, email: profileInfo.email };
   return response
 }
 
@@ -79,7 +79,7 @@ async function registration(profileInfo) {
     process.env.LINK_TOKEN,
     { expiresIn: "72h" }
   );
-  const response = { status: "success", token: token };
+  const response = { status: "success", token: token, email: profileInfo.email };
   return response
 }
 
