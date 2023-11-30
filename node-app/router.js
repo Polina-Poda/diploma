@@ -1,15 +1,20 @@
 const express = require('express');
 const router = express.Router()
+const dotenv = require('dotenv');
+dotenv.config();
 
-const addCategory = require('./function/addCategory')
-const addMenuItem = require('./function/addMenuItem')
-const getAllMenu = require('./function/getAllMenu')
-const deleteMenuItem = require('./function/deleteMenuItem')
-const deleteCategoryAndItems = require('./function/deleteCategoryAndItems')
-const editMenuItem = require('./function/editMenuItem')
-const editCategory = require('./function/editCategory')
-const selfRegistrationUser = require('./function/selfRegistrationUser')
-const selfRegistrationWorker = require('./function/selfRegistrationWorker')
+const addCategory = require('./functionWithFood/addCategory')
+const addMenuItem = require('./functionWithFood/addMenuItem')
+const getAllMenu = require('./functionWithFood/getAllMenu')
+const deleteMenuItem = require('./functionWithFood/deleteMenuItem')
+const deleteCategoryAndItems = require('./functionWithFood/deleteCategoryAndItems')
+const editMenuItem = require('./functionWithFood/editMenuItem')
+const editCategory = require('./functionWithFood/editCategory')
+const selfRegistrationUser = require('./registration/selfRegistrationUser')
+const selfRegistrationWorker = require('./registration/selfRegistrationWorker')
+const sixDigitCodeGeneration = require('./login/loginCode')
+const generateToken = require('./login/generateToken')
+
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -20,4 +25,7 @@ router.post('/editMenuItem/:itemId', editMenuItem.editMenuItem)
 router.post('/editCategory/:categoryId/:name', editCategory.editCategory)
 router.post('/selfRegistrationUser', selfRegistrationUser.selfRegistrationUser)
 router.post('/selfRegistrationWorker', selfRegistrationWorker.selfRegistrationWorker)
+router.post('/six/code/generation', sixDigitCodeGeneration.sixDigitCodeGeneration)
+router.post('/generate/token', generateToken.generateToken)
+
 module.exports = router
