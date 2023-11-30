@@ -14,6 +14,7 @@ const selfRegistrationUser = require('./registration/selfRegistrationUser')
 const selfRegistrationWorker = require('./registration/selfRegistrationWorker')
 const sixDigitCodeGeneration = require('./login/loginCode')
 const generateToken = require('./login/generateToken')
+const googleRegistration = require('./registration/registrationGoogle')
 
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
@@ -27,5 +28,6 @@ router.post('/selfRegistrationUser', selfRegistrationUser.selfRegistrationUser)
 router.post('/selfRegistrationWorker', selfRegistrationWorker.selfRegistrationWorker)
 router.post('/six/code/generation', sixDigitCodeGeneration.sixDigitCodeGeneration)
 router.post('/generate/token', generateToken.generateToken)
+router.post('/google/registration', googleRegistration.googleRegistration)
 
 module.exports = router
