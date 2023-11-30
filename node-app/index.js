@@ -1,40 +1,38 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const server = require('http').createServer(app);
 const mongoose = require('mongoose');
-const port  = process.env.PORT || 4000;
-const router = require('./router')
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(router)
+const port = process.env.PORT || 4000;
+const router = require('./router');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended : true }));
-app.use(express.json())
 
-const cors = require('cors');
-app.options('*', cors());
+// Enable CORS for all routes
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
-const corsOptions = {
-  credentials: true,
-   origin:'*',
-};
-
-app.use(cors(corsOptions));
-
-app.use("/",cors(corsOptions),router)
+// Use the router
+app.use(router);
 
 const start = async () => {
-    try {
-      await mongoose.connect(`mongodb+srv://aleksander:vfr4eszaq1@cluster0.jgxw19c.mongodb.net/?retryWrites=true&w=majority`)
-     
-      server.listen(port, () => {
-        console.log(`Server is running on port: ${port}`);
-      });
-    } catch (e) {
-      console.log(e)
-    }
+  try {
+    // Replace 'your_mongodb_connection_string' with your actual MongoDB connection string
+    await mongoose.connect('mongodb+srv://aleksander:vfr4eszaq1@cluster0.jgxw19c.mongodb.net/?retryWrites=true&w=majority', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    app.listen(port, () => {
+      console.log(`Server is running on port: ${port}`);
+    });
+  } catch (e) {
+    console.log(e);
   }
-  start();
+};
+
+start();
