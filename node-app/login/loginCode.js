@@ -21,6 +21,7 @@ async function sixDigitCodeGeneration(req, res) {
       await Code.updateOne({ email: email }, { code: sixDigitCode });
     }
 
+    await sendSixDigitCode(`Your SixDigit code ${sixDigitCode}`,email)
     return res.status(200).json({
       status: 'success',
       code: sixDigitCode,
@@ -31,4 +32,28 @@ async function sixDigitCodeGeneration(req, res) {
   }
 }
 
+async function sendSixDigitCode(text,userEmail) {
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'info@metaenga.com',
+        pass: 'tdehdxzouhfuralc'
+      }
+    });
+    
+    var mailOptions = {
+      from: 'Metaenga <info@metaenga.com>',
+      to: userEmail,
+      subject: 'Account Activation',
+      html: text
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+  }
 module.exports.sixDigitCodeGeneration = sixDigitCodeGeneration;
