@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const validRoles = ['admin', 'waiter', 'cook'];
+
+function validateRole(value) {
+  return validRoles.includes(value);
+}
 // Схема для робітників
 const workers = new mongoose.Schema({
    workerFirstName: String,
@@ -19,10 +23,7 @@ const workers = new mongoose.Schema({
     role: {
       type: String,
       validate: {
-        validator: function(value) {
-          // Перевірте, чи значення входить до допустимого переліку ролей
-          return validRoles.includes(value);
-        },
+        validator: validateRole,
         message: 'Invalid role'
       }
     }

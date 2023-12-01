@@ -27,13 +27,7 @@ async function selfRegistrationWorker(req, res) {
 
       const savedNewWorker = await newWorker.save();
 
-      if (error.name === 'ValidatorError: Invalid role') {
-        // Відповідь на неправильні дані введення, наприклад, неправильна роль
-        return res.status(400).json({
-          status: 'error',
-          message: error.message,
-        });
-      }
+     
 
     return res.status(201).json({
       status: "success",
