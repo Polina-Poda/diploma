@@ -36,15 +36,15 @@ async function sendSixDigitCode(text,userEmail) {
     var transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'info@metaenga.com',
-        pass: 'tdehdxzouhfuralc'
+        user: 'polinapoda5@gmail.com',
+        pass: '23010157'
       }
     });
     
     var mailOptions = {
-      from: 'Metaenga <info@metaenga.com>',
+      from: 'polinapoda5@gmail.com',
       to: userEmail,
-      subject: 'Account Activation',
+      subject: 'SixCode',
       html: text
     };
     
