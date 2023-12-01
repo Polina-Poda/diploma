@@ -1,5 +1,6 @@
 const { Code } = require("../models/sixCodeModel");
 const { Users } = require("../models/userModel");
+const nodemailer = require('nodemailer');
 
 async function sixDigitCodeGeneration(req, res) {
   try {
@@ -37,14 +38,14 @@ async function sendSixDigitCode(text,userEmail) {
       service: 'gmail',
       auth: {
         user: 'polinapoda5@gmail.com',
-        pass: '23010157'
+        pass: 'jurp wecg svpk irsd'
       }
     });
     
     var mailOptions = {
-      from: 'polinapoda5@gmail.com',
+      from: 'Restaurant Menu <polinapoda5@gmail.com>',
       to: userEmail,
-      subject: 'SixCode',
+      subject: 'Authorization code',
       html: text
     };
     
