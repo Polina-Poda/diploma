@@ -3,8 +3,7 @@ const { Workers } = require("../models/workerModel");
 async function getAllWorker(req, res) {
   try {
    
-    const workersWithRoles = await Workers.find({ role: { $in: ['admin', 'cook', 'waiter'] } })
-  .sort({ role: 1 }); // Сортування за зростанням ролі
+    const workersWithRoles = await Workers.find().select('-hashPassword')
 
     return res.status(201).json({
       status: "success",

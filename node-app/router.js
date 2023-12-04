@@ -19,8 +19,9 @@ const getUserData = require('./functionWithUser/getUserData')
 const getWorkerData = require('./functionWithWorker/getWorkerData')
 const getAllWorker = require('./functionWithWorker/getAllWorkers')
 const orderCreation = require('./functionWithOrder/orderCreation')
-
-
+const getDemoWorkersData = require('./adminFunction/getDemoWorkers')
+const roleEditing = require('./adminFunction/roleEditing')
+const deleteDemoWorker = require('./adminFunction/deleteDemoWorker')
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -38,5 +39,8 @@ router.get('/get/user/data', getUserData.getUserData)
 router.get('/get/worker/data', getWorkerData.getWorkerData)
 router.get('/get/all/worker', getAllWorker.getAllWorker)
 router.post('/order/creation', orderCreation.orderCreation)
+router.get('/get/demo/workers/data', getDemoWorkersData.getDemoWorkers)
+router.post('/role/editing', roleEditing.roleEditing)
+router.post('/delete/demo/worker', deleteDemoWorker.deleteDemoWorker)
 
 module.exports = router
