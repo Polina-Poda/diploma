@@ -26,6 +26,14 @@ async function googleRegistration(req, res) {
     } else {
       console.log("register", profileInfo.email);
       const response = await registration(profileInfo);
+
+      await Users.create({ 
+        email: profileInfo.email,
+        password: "",
+        hashPassword: "",
+        userName: profileInfo.name,
+        role: "user",
+        });
       return res.status(200).json(response);
     }
   } catch (error) {
