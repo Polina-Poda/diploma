@@ -18,6 +18,8 @@ const googleRegistration = require('./registration/registrationGoogle')
 const getUserData = require('./functionWithUser/getUserData')
 const getWorkerData = require('./functionWithWorker/getWorkerData')
 const getAllWorker = require('./functionWithWorker/getAllWorkers')
+const orderCreation = require('./functionWithOrder/orderCreation')
+
 
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
@@ -35,5 +37,6 @@ router.post('/google/registration', googleRegistration.googleRegistration)
 router.get('/get/user/data', getUserData.getUserData)
 router.get('/get/worker/data', getWorkerData.getWorkerData)
 router.get('/get/all/worker', getAllWorker.getAllWorker)
+router.post('/order/creation', orderCreation.orderCreation)
 
 module.exports = router

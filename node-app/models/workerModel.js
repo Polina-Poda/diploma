@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const validRoles = ['admin', 'waiter', 'cook'];
-
 function validateRole(value) {
   return validRoles.includes(value);
 }
@@ -20,13 +18,7 @@ const workers = new mongoose.Schema({
       }
     },
     hashPassword: String,
-    role: {
-      type: String,
-      validate: {
-        validator: validateRole,
-        message: 'Invalid role'
-      }
-    }
+    role: String
   });
   
   // Модель категорій робітників

@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 
 async function selfRegistrationWorker(req, res) {
   try {
-    const { workerFirstName, workerSecondName, password, duplicatePassword, email, role } = req.body;
-    if(!workerFirstName || !workerSecondName || !email || !password || !duplicatePassword || !role) return res.status(400).json({message: "Not all fields are filled"})
+    const { workerFirstName, workerSecondName, password, duplicatePassword, email } = req.body;
+    if(!workerFirstName || !workerSecondName || !email || !password || !duplicatePassword ) return res.status(400).json({message: "Not all fields are filled"})
 
     if (password !== duplicatePassword) return res.status(400).json({message: "Passwords do not match"})
 
@@ -22,7 +22,7 @@ async function selfRegistrationWorker(req, res) {
         workerSecondName:workerSecondName,
         email: email,
         hashPassword: hashPassword,
-        role: role,
+        role: "demo",
         });
 
       const savedNewWorker = await newWorker.save();
