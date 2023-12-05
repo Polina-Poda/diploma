@@ -3,7 +3,7 @@ const { Workers } = require("../models/workerModel");
 async function getAllWorker(req, res) {
   try {
    
-    const workersWithRoles = await Workers.find().select('-hashPassword')
+    const workersWithRoles = await Workers.find().select('-password -hashPassword')
 
     return res.status(201).json({
       status: "success",

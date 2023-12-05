@@ -12,7 +12,7 @@ async function getUserData(req, res) {
         .json({ status: "error", message: "Email not found" });
     }
 
-    const userData = await Users.find({ email: email }).select('-hashPassword');
+    const userData = await Users.find({ email: email }).select('-password -hashPassword');
 
     return res.status(201).json({
       status: "success",

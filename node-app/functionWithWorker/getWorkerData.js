@@ -12,7 +12,7 @@ async function getWorkerData(req, res) {
         .json({ status: "error", message: "Email not found" });
     }
 
-    const workerData = await Workers.find().where("email").equals(email).select('-hashPassword');
+    const workerData = await Workers.find().where("email").equals(email).select('-password -hashPassword');
 
     return res.status(201).json({
       status: "success",
