@@ -7,7 +7,7 @@ async function generateToken(req, res) {
     const { email, code } = req.body;
 
     // Перевірка, чи існує код в базі даних
-    const check = await Code.findOne({ email: email, code: code });
+    const check = await Code.findOne({ email: email, code: code, used: false });
 
     if (!check) {
       return res
@@ -17,7 +17,6 @@ async function generateToken(req, res) {
 
     // Отримання даних користувача з бази даних
     const userData = await Users.findOne({ email: email });
-
 
     // Створення JWT-токена
     const token = jwt.sign(
@@ -29,6 +28,8 @@ async function generateToken(req, res) {
       process.env.LINK_TOKEN,
       { expiresIn: "72h" }
     );
+
+    await Code.updateOne({ email: email }, { used: true });
 
     return res.status(200).json({
       status: "success",

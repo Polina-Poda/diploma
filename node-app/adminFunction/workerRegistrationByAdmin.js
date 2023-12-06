@@ -3,8 +3,14 @@ const nodemailer = require("nodemailer");
 
 async function workerRegistrationByAdmin(req, res) {
   try {
-    const { adminEmail, workerEmail, workerRole } = req.body;
+    const { adminEmail, workerEmail, newRole } = req.body;
 
+    if (!adminEmail || !workerEmail || !newRole) {
+      return res.status(400).json({
+        status: "error",
+        message: "Not enough data",
+      });
+    }
     let sixDigitCode = Math.floor(100000 + Math.random() * 900000);
 
     const checkRole = await Workers.findOne({ email: adminEmail }).select(
@@ -36,11 +42,23 @@ async function workerRegistrationByAdmin(req, res) {
     const worker = new Workers({
       email: workerEmail,
       password: sixDigitCode,
-      role: workerRole,
+      role: newRole,
     });
 
     await worker.save();
-
+    let role = "";
+    if (newRole === "admin") {
+      role = "адміністратора";
+    } else if (newRole === "manager") {
+      role = "менеджера";
+    } else if (newRole === "waiter") {
+      role = "офіціанта";
+    } else if (newRole === "cook") {
+      role = "кухаря";
+    } else if (newRole === "chef") {
+      role = "шеф-кухаря";
+    }
+    
     const text = `<!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>
@@ -57,7 +75,7 @@ async function workerRegistrationByAdmin(req, res) {
         </head>
         <body style="margin: 0; padding: 0; background-color: #ffffff;" data-new-gr-c-s-check-loaded="14.1100.0" data-gr-ext-installed="">
             <p >Шановний(-а)  ${workerEmail},
-            <br>З радістю повідомляємо, що Ваш обліковий запис як ${workerRole} у Restaurant Menu було успішно схвалено!</p>
+            <br>З радістю повідомляємо, що Ваш обліковий запис як ${role} у Restaurant Menu було успішно схвалено!</p>
             <p>Код для входу: <strong>${sixDigitCode}</strong></p>
             <p>З найкращими побажаннями,<br>Команда Restaurant Menu</p>
         </body>
@@ -101,5 +119,5 @@ async function sendRoleEditing(text, userEmail) {
       }
     });
   }
-  
+
 module.exports.workerRegistrationByAdmin = workerRegistrationByAdmin;

@@ -22,6 +22,7 @@ const orderCreation = require('./functionWithOrder/orderCreation')
 const getDemoWorkersData = require('./adminFunction/getDemoWorkers')
 const roleEditing = require('./adminFunction/roleEditing')
 const deleteDemoWorker = require('./adminFunction/deleteDemoWorker')
+const workerRegistrationByAdmin = require('./adminFunction/workerRegistrationByAdmin')
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -42,5 +43,6 @@ router.post('/order/creation', orderCreation.orderCreation)
 router.get('/get/demo/workers/data', getDemoWorkersData.getDemoWorkers)
 router.post('/role/editing', roleEditing.roleEditing)
 router.post('/delete/demo/worker', deleteDemoWorker.deleteDemoWorker)
+router.post('/worker/reg/by/admin', workerRegistrationByAdmin.workerRegistrationByAdmin)
 
 module.exports = router

@@ -9,6 +9,10 @@ const codeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  used: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Code = mongoose.model('Code', codeSchema, 'login_code');

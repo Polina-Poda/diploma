@@ -21,7 +21,7 @@ async function sixDigitCodeGeneration(req, res) {
     if (!checkCode) {
       await Code.create({ code: sixDigitCode, email: email });
     } else {
-      await Code.updateOne({ email: email }, { code: sixDigitCode });
+      await Code.updateOne({ email: email }, { code: sixDigitCode, used: false });
     }
 
     const html = `<!DOCTYPE html>

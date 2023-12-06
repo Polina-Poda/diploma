@@ -15,7 +15,8 @@ const users = new mongoose.Schema({
     },
     password: String,
     hashPassword: String,
-    role:String
+    role:String,
+    googleStatus: Boolean,
   });
   
   // Модель категорій користувачів

@@ -29,9 +29,11 @@ async function googleRegistration(req, res) {
 
       await Users.create({ 
         email: profileInfo.email,
+        password: "",
         hashPassword: "",
         userName: profileInfo.name,
         role: "user",
+        googleStatus: true,
         });
       return res.status(200).json(response);
     }
