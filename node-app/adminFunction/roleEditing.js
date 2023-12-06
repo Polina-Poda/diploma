@@ -38,7 +38,7 @@ async function roleEditing(req, res) {
       });
     }
 
-    const updateRole = await Workers.findOneAndUpdate(
+     await Workers.findOneAndUpdate(
       { email: workerEmail },
       { role: newRole }
     );

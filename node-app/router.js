@@ -23,6 +23,7 @@ const getDemoWorkersData = require('./adminFunction/getDemoWorkers')
 const roleEditing = require('./adminFunction/roleEditing')
 const deleteDemoWorker = require('./adminFunction/deleteDemoWorker')
 const workerRegistrationByAdmin = require('./adminFunction/workerRegistrationByAdmin')
+const applicationApprovedUser = require('./registration/applicationApprovedUser')
 
 router.post('/addCategory/:categoryName', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -44,5 +45,6 @@ router.get('/get/demo/workers/data', getDemoWorkersData.getDemoWorkers)
 router.post('/role/editing', roleEditing.roleEditing)
 router.post('/delete/demo/worker', deleteDemoWorker.deleteDemoWorker)
 router.post('/worker/reg/by/admin', workerRegistrationByAdmin.workerRegistrationByAdmin)
+router.post('/application/approved/user', applicationApprovedUser.applicationApprovedUser)
 
 module.exports = router

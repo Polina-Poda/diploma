@@ -6,7 +6,7 @@ function validateRole(value) {
 // Схема для робітників
 const workers = new mongoose.Schema({
    workerFirstName: String,
-   workerSecondName: String,
+   workerLastName: String,
     email: {
       type: String,
       validate: {
