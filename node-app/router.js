@@ -37,7 +37,7 @@ router.post('/selfRegistrationWorker', selfRegistrationWorker.selfRegistrationWo
 router.post('/six/code/generation', sixDigitCodeGeneration.sixDigitCodeGeneration)
 router.post('/generate/token', generateToken.generateToken)
 router.post('/google/registration', googleRegistration.googleRegistration)
-router.get('/get/user/data', getUserData.getUserData)
+router.get('/get/user/data/:email', getUserData.getUserData)
 router.get('/get/worker/data', getWorkerData.getWorkerData)
 router.get('/get/all/worker', getAllWorker.getAllWorker)
 router.post('/order/creation', orderCreation.orderCreation)

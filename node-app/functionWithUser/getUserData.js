@@ -3,7 +3,7 @@ const { Users } = require("../models/userModel");
 async function getUserData(req, res) {
   try {
     console.log(req.body);
-    const { email } = req.body;
+    const email  = req.params.email;
 
     const checkEmail = await Users.findOne({ email: email });
 
