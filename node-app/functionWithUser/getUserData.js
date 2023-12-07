@@ -2,7 +2,7 @@ const { Users } = require("../models/userModel");
 
 async function getUserData(req, res) {
   try {
-    console.log(req);
+    console.log(req.body);
     const { email } = req.body;
 
     const checkEmail = await Users.findOne({ email: email });
