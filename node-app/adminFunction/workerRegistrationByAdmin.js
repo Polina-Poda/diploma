@@ -13,7 +13,7 @@ async function workerRegistrationByAdmin(req, res) {
       });
     }
 
-    var token = await jwt.sign(
+    let token = await jwt.sign(
       {
         workerEmail: workerEmail,
         newRole: newRole,

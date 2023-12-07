@@ -1,11 +1,13 @@
 const { Users } = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 async function selfRegistrationUser(req, res) {
   try {
     const { userName, email, password, duplicatePassword } = req.body;
     if(!userName || !email || !password || !duplicatePassword) return res.status(400).json({message: "Not all fields are filled"})
 
+  
     const checkEmail = await Users.findOne({ email: email });
     if (password !== duplicatePassword) return res.status(400).json({message: "Passwords do not match"})
 
@@ -15,6 +17,15 @@ async function selfRegistrationUser(req, res) {
         message: "Email already exists",
       });
     }
+    let token = await jwt.sign(
+      {
+        userName: userName,
+        email: email
+      },
+      process.env.LINK_TOKEN,
+      { expiresIn: "72h" }
+    );
+
     const hashPassword = await bcrypt.hash(password, 7); 
     const newUser = new Users({
         userName: userName,
@@ -28,7 +39,8 @@ async function selfRegistrationUser(req, res) {
       const savedNewUser = await newUser.save();
 
     return res.status(201).json({
-      status: "success"
+      status: "success",
+      token: token,
     });
   } catch (error) {
     console.error(error);

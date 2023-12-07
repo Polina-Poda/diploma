@@ -1,6 +1,7 @@
 const { Workers } = require("../models/workerModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const jwt = require("jsonwebtoken");
 
 async function selfRegistrationWorker(req, res) {
   try {
@@ -39,7 +40,13 @@ async function selfRegistrationWorker(req, res) {
       role: "demo",
     });
 
-    const savedNewWorker = await newWorker.save();
+    let token = await jwt.sign({
+      workerFirstName: workerFirstName,
+      workerSecondName: workerSecondName,
+      email: email,
+      role: "demo",
+    });
+     await newWorker.save();
 
     const text = `<!DOCTYPE html>
       <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -73,6 +80,7 @@ async function selfRegistrationWorker(req, res) {
 
     return res.status(201).json({
       status: "success",
+      token: token,
     });
   } catch (error) {
     console.error(error);
