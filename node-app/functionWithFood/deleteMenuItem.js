@@ -1,17 +1,31 @@
 const { MenuItem } = require("../models/foodModel");
+const { Workers } = require("../models/workerModel");
 
 async function deleteMenuItem(req, res) {
     try {
-      const itemId = req.params.itemId; // Отримайте ідентифікатор страви з запиту
+      const {itemId, email} = req.body; 
 
+      const checkEmail = await Workers.findOne({ email: email });
+
+      if (!checkEmail) { 
+        return res.status(400).json({
+          status: "error",
+          message: "Email not found",
+        });
+      }
+      if (checkEmail.role !== "admin" && checkEmail.role !== "chef") {
+        return res.status(400).json({
+          status: "error",
+          message: "You do not have permission",
+        });
+      }
       // Перевірте, чи існує страва з таким ідентифікатором
       const existingItem = await MenuItem.findById(itemId);
 
       if (!existingItem) {
-        console.error(`Страва з ідентифікатором ${itemId} не знайдена`);
         return res.status(404).json({
           status: "error",
-          message: `Страва з ідентифікатором ${itemId} не знайдена`,
+          message: "Food not found",
         });
       }
 
@@ -25,7 +39,7 @@ async function deleteMenuItem(req, res) {
       console.error(error);
       return res.status(500).json({
         status: "error",
-        message: "Помилка при видаленні страви",
+        message: "Error deleting food",
       });
     }
   }

@@ -1,9 +1,34 @@
 const { Category, MenuItem } = require("../models/foodModel");
+const { Workers } = require("../models/workerModel");
 
 async function deleteCategoryAndItems(req, res) {
     try {
-        const categoryId = req.params.categoryId; // Отримайте ідентифікатор категорії з запиту
+        const {categoryId, email} = req.body; 
+
+        const checkEmail = await Workers.findOne({ email: email });
+
+        if (!checkEmail) { 
+          return res.status(400).json({
+            status: "error",
+            message: "Email not found",
+          });
+        }
+        if (checkEmail.role !== "admin" && checkEmail.role !== "chef") {
+          return res.status(400).json({
+            status: "error",
+            message: "You do not have permission",
+          });
+        }
   
+         // Перевірте, чи існує категорія з вказаною назвою
+      const existingCategory = await Category.findById(categoryId);
+      if (!existingCategory) {
+
+        return res.status(400).json({
+          status: "error",
+          message: "Category not found",
+        });
+      }
         // Знайдіть всі страви, які належать до цієї категорії
         const itemsInCategory = await MenuItem.find({ category: categoryId });
   

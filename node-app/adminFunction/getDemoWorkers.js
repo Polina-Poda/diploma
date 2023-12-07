@@ -2,9 +2,9 @@ const { Workers } = require("../models/workerModel");
 
 async function getDemoWorkers(req, res) {
   try {
-   const { email } = req.body;
+   const  email = req.params.email;
    const checkRole = await Workers.findOne({ email: email }).select('role');
-    
+
    if (!checkRole) {
     return res.status(400).json({
       status: "error",

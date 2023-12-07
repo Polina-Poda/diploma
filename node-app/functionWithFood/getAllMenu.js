@@ -39,7 +39,7 @@ async function getAllMenu(req, res) {
       console.error(error);
       return res.status(400).json({
         status: "error",
-        message: "Помилка при отримані меню",
+        message: "Error getting menu",
       });
     }
   }

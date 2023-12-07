@@ -2,7 +2,7 @@ const { Workers } = require("../models/workerModel");
 
 async function getWorkerData(req, res) {
   try {
-    const { email } = req.body;
+    const  email  = req.params.email;
 
     const checkEmail = await Workers.findOne({ email: email });
 

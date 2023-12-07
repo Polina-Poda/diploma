@@ -1,27 +1,41 @@
 const { Category, MenuItem } = require("../models/foodModel");
+const { Workers } = require("../models/workerModel");
 
 async function addMenuItem(req, res) {
     try {
-      const {categoryName, name, weight, calories, price, description} = req.body;
+      const {categoryName, name, weight, calories, price, description, email} = req.body;
   
-      if (!categoryName || !name || !weight || !calories || !price || !description) {
+      if (!categoryName || !name || !weight || !calories || !price || !description || !email) {
         return res.status(400).json({
           status: "error",
-          message: "Всі поля повинні бути заповнені",
+          message: "All fields must be filled",
         });
       }
+      console.log(categoryName, name, weight, calories, price, description, email);
+      const checkEmail = await Workers.findOne({ email: email });
 
+      if (!checkEmail) { 
+        return res.status(400).json({
+          status: "error",
+          message: "Email not found",
+        });
+      }
+      if (checkEmail.role !== "admin" && checkEmail.role !== "chef") {
+        return res.status(400).json({
+          status: "error",
+          message: "You do not have permission",
+        });
+      }
+  
       const сategory = await Category.findOne({ name: categoryName });
 
       if (!сategory) {
-        console.error("Категорія не знайдена");
         return res.status(404).json({
           status: "error",
-          message: "Категорія не знайдена",
+          message: "Category not found",
         });
       }
 
-      
       // Перевірте, чи існує страва з вказаною назвою взагалі
       const existingMenuItemByName = await MenuItem.findOne({
         name: name,
@@ -31,7 +45,7 @@ async function addMenuItem(req, res) {
         // Страва вже існує в межах вибраної категорії, виведемо помилку
         return res.status(400).json({
           status: "error",
-          message: "Страва з такою назвою вже існує",
+          message: "A dish with that name already exists",
         });
       }
 
@@ -48,19 +62,16 @@ async function addMenuItem(req, res) {
         category: сategoryId, // Встановлюємо категорію за допомогою ідентифікатора
       });
 
-      // Збережіть страву в базу даних за допомогою `await`
-      const savedCategoryVariety = await newCategoryVariety.save();
+      await newCategoryVariety.save();
 
-      console.log("Піца додана:", savedCategoryVariety);
       return res.status(201).json({
-        status: "success",
-        categoryVariety: savedCategoryVariety,
+        status: "success"
       });
     } catch (error) {
       console.error(error);
       return res.status(400).json({
         status: "error",
-        message: "Помилка при додаванні страви",
+        message: "Error adding food",
       });
     }
   }
