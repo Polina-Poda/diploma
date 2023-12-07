@@ -28,8 +28,7 @@ async function selfRegistrationUser(req, res) {
       const savedNewUser = await newUser.save();
 
     return res.status(201).json({
-      status: "success",
-      data: savedNewUser,
+      status: "success"
     });
   } catch (error) {
     console.error(error);

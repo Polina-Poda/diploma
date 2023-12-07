@@ -2,6 +2,7 @@ const { Users } = require("../models/userModel");
 
 async function getUserData(req, res) {
   try {
+    console.log(req);
     const { email } = req.body;
 
     const checkEmail = await Users.findOne({ email: email });
