@@ -27,6 +27,7 @@ const applicationApprovedUser = require('./registration/applicationApprovedUser'
 const loginWithPasswordUser = require('./login/loginWithPasswordUser')
 const loginWithPasswordWorker = require('./login/loginWithPasswordWorker')
 const addFavoriteFood = require('./functionWithUser/addFavoriteFood')
+const removeFavoriteFood = require('./functionWithUser/removeFavoriteFood')
 
 router.post('/addCategory', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -53,5 +54,7 @@ router.post('/application/approved/user', applicationApprovedUser.applicationApp
 router.post('/login/with/password/user', loginWithPasswordUser.loginWithPassword)
 router.post('/login/with/password/worker', loginWithPasswordWorker.loginWithPasswordWorker)
 router.post('/add/favorite/food', addFavoriteFood.addFood)
+router.post('/remove/favorite/food', removeFavoriteFood.removeFood)
+
 
 module.exports = router
