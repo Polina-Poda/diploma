@@ -19,12 +19,12 @@ async function addFood(req, res) {
         status: "error",
         message: "Food not found",
       });
-    }
-    await Users.updateOne(
-      { email: email },
-      { $push: { favorites: foodName } }
-    );
-      return res.status(201).json({
+    }   
+  await Users.updateOne(
+  { email: email },
+  { $push: { favorites: { foodName: foodName } } }
+  );
+     res.status(201).json({
         status: "success",
         message: "Food added",
       });
