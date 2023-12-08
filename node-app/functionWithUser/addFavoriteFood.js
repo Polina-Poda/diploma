@@ -19,9 +19,9 @@ async function addFood(req, res) {
         message: "Food not found",
       });
     }
-    await Users.updateOne(
+    await Users.findOneAndUpdate(
       { email: email },
-      { $push: { favorites: foodName } }
+      { favorites: foodName }
     );
 
   } catch (error) {
