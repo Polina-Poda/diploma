@@ -52,6 +52,6 @@ router.post('/worker/reg/by/admin', workerRegistrationByAdmin.workerRegistration
 router.post('/application/approved/user', applicationApprovedUser.applicationApprovedUser)
 router.post('/login/with/password/user', loginWithPasswordUser.loginWithPassword)
 router.post('/login/with/password/worker', loginWithPasswordWorker.loginWithPasswordWorker)
-router.psot('/add/favorite/food', addFavoriteFood.addFood)
+router.post('/add/favorite/food', addFavoriteFood.addFood)
 
 module.exports = router
