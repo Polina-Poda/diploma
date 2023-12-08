@@ -32,8 +32,7 @@ async function selfRegistrationUser(req, res) {
         email: email,
         hashPassword: hashPassword,
         role: "user",
-        googleStatus: false,
-        password: password,
+        googleStatus: false,        
         });
 
       const savedNewUser = await newUser.save();

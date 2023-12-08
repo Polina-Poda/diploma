@@ -16,8 +16,7 @@ const workers = new mongoose.Schema({
         },
         message: 'Incorrect email format'
       }
-    },
-    password: String,
+    },    
     hashPassword: String,
     role: String
   });

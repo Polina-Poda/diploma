@@ -12,8 +12,7 @@ const users = new mongoose.Schema({
         },
         message: 'Incorrect email format'
       }
-    },
-    password: String,
+    },    
     hashPassword: String,
     role:String,
     googleStatus: Boolean,
