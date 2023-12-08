@@ -10,10 +10,10 @@ async function loginWithPassword(req, res) {
 
     if (!checkEmail) {
       return res
-        .status(400)
+        .status(401)
         .json({ status: "error", message: "Email not found" });
     }
-
+    if(checkEmail.googleStatus == true) return res.status(403).json({status: "error", message: "You are registered with Google"})
     console.log("checkEmail.password",checkEmail.password);
 
     const passwordMatch = await bcrypt.compare(password, checkEmail.hashPassword);
@@ -21,7 +21,7 @@ async function loginWithPassword(req, res) {
     console.log("passwordMatch",passwordMatch);
     if (!passwordMatch) {
       return res
-        .status(400)
+        .status(402)
         .json({ status: "error", message: "Password incorrect" });
     }
 
@@ -41,7 +41,7 @@ async function loginWithPassword(req, res) {
     });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ status: "error" });
+    return res.status(405).json({ status: "error" });
   }
 }
 module.exports.loginWithPassword = loginWithPassword;

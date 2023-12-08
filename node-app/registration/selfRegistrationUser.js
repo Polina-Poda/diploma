@@ -12,7 +12,7 @@ async function selfRegistrationUser(req, res) {
     if (password !== duplicatePassword) return res.status(400).json({message: "Passwords do not match"})
 
     if (checkEmail) {
-      return res.status(404).json({
+      return res.status(401).json({
         status: "error",
         message: "Email already exists",
       });
