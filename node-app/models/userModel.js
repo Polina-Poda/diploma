@@ -16,6 +16,11 @@ const users = new mongoose.Schema({
     hashPassword: String,
     role:String,
     googleStatus: Boolean,
+    favorites: [
+      {
+        foodName: String,                
+      }
+    ]
   });
   
   // Модель категорій користувачів

@@ -18,7 +18,7 @@ async function getAllMenu(req, res) {
           calories: item.calories,
           category: item.category,
           description: item.description,
-          price: item.price,
+          price: item.price,          
         }));
       
         result.push({
