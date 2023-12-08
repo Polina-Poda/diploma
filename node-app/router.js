@@ -24,7 +24,7 @@ const roleEditing = require('./adminFunction/roleEditing')
 const deleteDemoWorker = require('./adminFunction/deleteDemoWorker')
 const workerRegistrationByAdmin = require('./adminFunction/workerRegistrationByAdmin')
 const applicationApprovedUser = require('./registration/applicationApprovedUser')
-const loginWithPassword = require('./login/loginWithPassword')
+const loginWithPassword = require('./login/loginWithPasswordUser')
 
 router.post('/addCategory', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -48,6 +48,6 @@ router.post('/role/editing', roleEditing.roleEditing)
 router.post('/delete/demo/worker', deleteDemoWorker.deleteDemoWorker)
 router.post('/worker/reg/by/admin', workerRegistrationByAdmin.workerRegistrationByAdmin)
 router.post('/application/approved/user', applicationApprovedUser.applicationApprovedUser)
-router.post('/login/with/password', loginWithPassword.loginWithPassword)
+router.post('/login/with/password/user', loginWithPassword.loginWithPassword)
 
 module.exports = router
