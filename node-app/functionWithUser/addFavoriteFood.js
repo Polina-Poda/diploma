@@ -12,6 +12,7 @@ async function addFood(req, res) {
             .status(401)
             .json({ status: "error", message: "Email not found" });
         }
+        console.log("FoodName",foodName);
     const checkFood = await Foods.findOne({ name: foodName });
     if (!checkFood) {
       return res.status(401).json({
@@ -23,7 +24,10 @@ async function addFood(req, res) {
       { email: email },
       { $push: { favorites: foodName } }
     );
-
+      return res.status(201).json({
+        status: "success",
+        message: "Food added",
+      });
   } catch (error) {
     console.error(error);
     return res.status(400).json({
