@@ -12,16 +12,16 @@ async function addFood(req, res) {
             .status(401)
             .json({ status: "error", message: "Email not found" });
         }
-    const checkFood = await Foods.findOne({ foodName: foodName });
+    const checkFood = await Foods.findOne({ name: foodName });
     if (!checkFood) {
       return res.status(401).json({
         status: "error",
         message: "Food not found",
       });
     }
-    await Users.findOneAndUpdate(
+    await Users.updateOne(
       { email: email },
-      { favorites: foodName }
+      { $push: { favorites: foodName } }
     );
 
   } catch (error) {
