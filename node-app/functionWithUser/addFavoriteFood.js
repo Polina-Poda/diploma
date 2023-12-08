@@ -1,5 +1,5 @@
 const { Users } = require("../models/userModel");
-const { Foods } = require("../models/foodModel");
+const { MenuItem } = require("../models/foodModel");
 
 async function addFood(req, res) {
   try {
@@ -13,7 +13,7 @@ async function addFood(req, res) {
             .json({ status: "error", message: "Email not found" });
         }
         console.log("FoodName",foodName);
-    const checkFood = await Foods.findOne({ name: foodName });
+    const checkFood = await MenuItem.findOne({ name: foodName });
     if (!checkFood) {
       return res.status(401).json({
         status: "error",
