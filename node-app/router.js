@@ -29,6 +29,7 @@ const loginWithPasswordWorker = require('./login/loginWithPasswordWorker')
 const addFavoriteFood = require('./functionWithUser/addFavoriteFood')
 const removeFavoriteFood = require('./functionWithUser/removeFavoriteFood');
 const getFavorites = require('./functionWithFood/getFavorites');
+const editUserData = require('./functionWithUser/editUserData');
 
 
 router.post('/addCategory', addCategory.addCategory)
@@ -59,6 +60,7 @@ router.post('/login/with/password/worker', loginWithPasswordWorker.loginWithPass
 router.post('/add/favorite/food', addFavoriteFood.addFood)
 router.post('/remove/favorite/food', removeFavoriteFood.removeFood)
 router.get('/get/favorites/:email', getFavorites.getFavorites)
+router.post('/edit/user/data', editUserData.editUserData)
 
 
 module.exports = router
