@@ -7,11 +7,7 @@ async function editUserData(req, res) {
     
     const checkEmail = await Users.findOne({ email: email });
     
-    if (!checkEmail) {
-      return res
-        .status(400)
-        .json({ status: "error", message: "Email not found" });
-    }
+    
 
     const checkNewEmail = await Users.findOne({ email: newemail });
 
