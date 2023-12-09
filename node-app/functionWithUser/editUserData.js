@@ -3,7 +3,7 @@ const { Users } = require("../models/userModel");
 async function editUserData(req, res) {
   try {
     console.log(req.body);
-    const { email, name } = req.body;
+    const { email, newemail , name } = req.body;
     
     const checkEmail = await Users.findOne({ email: email });
     
@@ -12,8 +12,16 @@ async function editUserData(req, res) {
         .status(400)
         .json({ status: "error", message: "Email not found" });
     }
+
+    const checkNewEmail = await Users.findOne({ email: newemail });
+
+    if (checkNewEmail) {
+      return res
+        .status(402)
+        .json({ status: "error", message: "Email already exists" });
+    }
     
-    await Users.updateOne({ email: email }, { $set: { userName: name, email: email } });
+    await Users.updateOne({ email: email }, { $set: { userName: name, email: newemail } });
     
     res.status(200).json({
       status: "success",
