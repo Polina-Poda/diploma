@@ -4,10 +4,6 @@ async function editUserData(req, res) {
   try {
     console.log(req.body);
     const { email, newemail , name } = req.body;
-    
-    const checkEmail = await Users.findOne({ email: email });
-    
-    
 
     const checkNewEmail = await Users.findOne({ email: newemail });
 
