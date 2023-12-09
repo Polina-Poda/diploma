@@ -27,7 +27,9 @@ const applicationApprovedUser = require('./registration/applicationApprovedUser'
 const loginWithPasswordUser = require('./login/loginWithPasswordUser')
 const loginWithPasswordWorker = require('./login/loginWithPasswordWorker')
 const addFavoriteFood = require('./functionWithUser/addFavoriteFood')
-const removeFavoriteFood = require('./functionWithUser/removeFavoriteFood')
+const removeFavoriteFood = require('./functionWithUser/removeFavoriteFood');
+const getFavorites = require('./functionWithFood/getFavorites');
+
 
 router.post('/addCategory', addCategory.addCategory)
 router.post('/addMenuItem', addMenuItem.addMenuItem)
@@ -36,6 +38,7 @@ router.post('/deleteCategoryAndItems', deleteCategoryAndItems.deleteCategoryAndI
 router.post('/editMenuItem', editMenuItem.editMenuItem)
 router.post('/editCategory', editCategory.editCategory)
 router.get('/getAllMenu', getAllMenu.getAllMenu)
+
 
 router.post('/selfRegistrationUser', selfRegistrationUser.selfRegistrationUser)
 router.post('/selfRegistrationWorker', selfRegistrationWorker.selfRegistrationWorker)
@@ -55,6 +58,7 @@ router.post('/login/with/password/user', loginWithPasswordUser.loginWithPassword
 router.post('/login/with/password/worker', loginWithPasswordWorker.loginWithPasswordWorker)
 router.post('/add/favorite/food', addFavoriteFood.addFood)
 router.post('/remove/favorite/food', removeFavoriteFood.removeFood)
+router.get('/get/favorites/:email', getFavorites.getFavorites)
 
 
 module.exports = router
