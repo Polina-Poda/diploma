@@ -7,6 +7,7 @@ const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 dotenv.config();
 const { Users } = require("../models/userModel");
+const { Workers } = require("../models/workerModel");
 
 async function googleRegistration(req, res) {
   const { token } = req.body;
@@ -18,7 +19,13 @@ async function googleRegistration(req, res) {
     console.log("Received profileInfo:", profileInfo);
 
     const email = await Users.findOne({ email: profileInfo.email });
-
+    const emailWorker = await Workers.findOne({ email: profileInfo.email });
+    if(emailWorker){
+      return res.status(401).json({
+        status: "error",
+        message: "Email already exists",
+      });
+    }
     if (email) {
       console.log("login", profileInfo.email);
       const response = await login(profileInfo);
