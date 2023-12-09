@@ -30,6 +30,7 @@ const addFavoriteFood = require('./functionWithUser/addFavoriteFood')
 const removeFavoriteFood = require('./functionWithUser/removeFavoriteFood');
 const getFavorites = require('./functionWithFood/getFavorites');
 const editUserData = require('./functionWithUser/editUserData');
+const editWorkerData = require('./functionWithWorker/editWorkerData');
 
 
 router.post('/addCategory', addCategory.addCategory)
@@ -61,6 +62,7 @@ router.post('/add/favorite/food', addFavoriteFood.addFood)
 router.post('/remove/favorite/food', removeFavoriteFood.removeFood)
 router.get('/get/favorites/:email', getFavorites.getFavorites)
 router.post('/edit/user/data', editUserData.editUserData)
+router.post('/edit/worker/data', editWorkerData.editWorkerData)
 
 
 module.exports = router

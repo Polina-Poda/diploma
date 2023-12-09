@@ -1,5 +1,5 @@
 const { Workers } = require("../models/workerModel");
-async function editUserData(req, res) {
+async function editWorkerData(req, res) {
   try {
     console.log(req.body);
     const { email, newemail , firstName , lastName} = req.body;
@@ -20,4 +20,4 @@ async function editUserData(req, res) {
   }
 }
 
-module.exports.editUserData = editUserData;
+module.exports.editWorkerData = editWorkerData;
