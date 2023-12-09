@@ -4,7 +4,7 @@ async function editUserData(req, res) {
   try {
     console.log(req.body);
     const { email, newemail , name } = req.body;
-    
+    console.log(email, newemail, name);
     await Users.updateOne({ email: email }, { $set: { userName: name, email: newemail } });
     
     res.status(200).json({
