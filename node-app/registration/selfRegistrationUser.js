@@ -1,4 +1,5 @@
 const { Users } = require("../models/userModel");
+const { Workers } = require("../models/workerModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -9,9 +10,11 @@ async function selfRegistrationUser(req, res) {
 
   
     const checkEmail = await Users.findOne({ email: email });
+    const checkEmailWoker = await Workers.findOne({ email: email });
     if (password !== duplicatePassword) return res.status(400).json({message: "Passwords do not match"})
 
-    if (checkEmail) {
+
+    if (checkEmail || checkEmailWoker) {
       return res.status(401).json({
         status: "error",
         message: "Email already exists",

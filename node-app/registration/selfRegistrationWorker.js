@@ -1,4 +1,5 @@
 const { Workers } = require("../models/workerModel");
+const { Users } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
@@ -25,7 +26,8 @@ async function selfRegistrationWorker(req, res) {
       return res.status(400).json({ message: "Passwords do not match" });
 
     const checkEmail = await Workers.findOne({ email: email });
-    if (checkEmail) {
+    const checkEmailUser = await Users.findOne({ email: email });
+    if (checkEmail || checkEmailUser) {
       return res.status(401).json({
         status: "error",
         message: "Email already exists",
