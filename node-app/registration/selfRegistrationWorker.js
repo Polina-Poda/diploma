@@ -26,7 +26,7 @@ async function selfRegistrationWorker(req, res) {
 
     const checkEmail = await Workers.findOne({ email: email });
     if (checkEmail) {
-      return res.status(404).json({
+      return res.status(401).json({
         status: "error",
         message: "Email already exists",
       });
@@ -45,7 +45,10 @@ async function selfRegistrationWorker(req, res) {
       workerSecondName: workerSecondName,
       email: email,
       role: "demo",
-    });
+    },
+     process.env.LINK_TOKEN,
+    { expiresIn: "72h" }
+  );
      await newWorker.save();
 
     const text = `<!DOCTYPE html>
