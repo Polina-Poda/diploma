@@ -10,7 +10,7 @@ async function loginWithPasswordWorker(req, res) {
 
     if (!checkEmail) {
       return res
-        .status(400)
+        .status(401)
         .json({ status: "error", message: "Email not found" });
     }
 
@@ -18,7 +18,7 @@ async function loginWithPasswordWorker(req, res) {
 
     if (!passwordMatch) {
       return res
-        .status(400)
+        .status(402)
         .json({ status: "error", message: "Password incorrect" });
     }
 

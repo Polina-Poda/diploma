@@ -7,14 +7,14 @@ async function selfRegistrationWorker(req, res) {
   try {
     const {
       workerFirstName,
-      workerSecondName,
+      workerLastName,
       password,
       duplicatePassword,
       email,
     } = req.body;
     if (
       !workerFirstName ||
-      !workerSecondName ||
+      !workerLastName ||
       !email ||
       !password ||
       !duplicatePassword
@@ -34,7 +34,7 @@ async function selfRegistrationWorker(req, res) {
     const hashPassword = await bcrypt.hash(password, 7);
     const newWorker = new Workers({
       workerFirstName: workerFirstName,
-      workerSecondName: workerSecondName,
+      workerLastName: workerLastName,
       email: email,
       hashPassword: hashPassword,
       role: "demo",
@@ -42,7 +42,7 @@ async function selfRegistrationWorker(req, res) {
 
     let token = await jwt.sign({
       workerFirstName: workerFirstName,
-      workerSecondName: workerSecondName,
+      workerLastName: workerLastName,
       email: email,
       role: "demo",
     },
