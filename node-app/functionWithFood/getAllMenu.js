@@ -23,6 +23,7 @@ async function getAllMenu(req, res) {
         }));
       
         result.push({
+          categoryId: category._id,
           categoryName: categoryName,
           items: formattedItems,
         });
