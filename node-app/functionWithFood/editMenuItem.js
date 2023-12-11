@@ -20,7 +20,7 @@ async function editMenuItem(req, res) {
         message: "Email not found",
       });
     }
-    if (checkEmail.role !== "admin" && checkEmail.role !== "cook") {
+    if (checkEmail.role !== "admin" && checkEmail.role !== "chef") {
       return res.status(400).json({
         status: "error",
         message: "You do not have permission",
