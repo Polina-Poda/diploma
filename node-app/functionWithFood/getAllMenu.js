@@ -13,6 +13,7 @@ async function getAllMenu(req, res) {
         );
       
         const formattedItems = itemsInCategory.map((item) => ({
+          id: item._id,
           name: item.name,
           weight: item.weight,
           calories: item.calories,
