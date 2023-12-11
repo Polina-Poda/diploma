@@ -5,7 +5,7 @@ async function addMenuItem(req, res) {
     try {
       const {categoryName, name, weight, calories, price, description, email} = req.body;
   
-      if (!categoryName || !name || !weight || !calories || !price || !description || !email) {
+      if (!categoryName || !name || !weight || !price || !description || !email) {
         return res.status(400).json({
           status: "error",
           message: "All fields must be filled",
