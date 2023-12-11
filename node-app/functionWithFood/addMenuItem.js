@@ -11,7 +11,7 @@ async function addMenuItem(req, res) {
           message: "All fields must be filled",
         });
       }
-      console.log(categoryName, name, weight, calories, price, description, email);
+      console.log(categoryName, name, weight,  price, description, email);
       const checkEmail = await Workers.findOne({ email: email });
 
       if (!checkEmail) { 
