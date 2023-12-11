@@ -1,11 +1,9 @@
-const e = require("express");
 const { MenuItem } = require("../models/foodModel");
-const { Workers } = require("../models/workerModel");
+const { Users, Workers } = require("../models/workerModel");
 
 async function editMenuItem(req, res) {
   try {
-    const { itemId, name, weight, calories, price, description, email } =
-      req.body; // Отримайте нові дані для страви з тіла запиту
+    const { itemId, name, weight, calories, price, description, email } = req.body;
 
     if (!itemId || !email) {  
       return res.status(400).json({
@@ -13,6 +11,7 @@ async function editMenuItem(req, res) {
         message: "ItemId and email must be filled",
       });
     }
+
     const checkEmail = await Workers.findOne({ email: email });
     if (!checkEmail) {
       return res.status(400).json({
@@ -20,25 +19,26 @@ async function editMenuItem(req, res) {
         message: "Email not found",
       });
     }
+
     if (checkEmail.role !== "admin" && checkEmail.role !== "chef") {
       return res.status(400).json({
         status: "error",
         message: "You do not have permission",
       });
     }
-    // Знайдіть страву за ідентифікатором
+
     const existingItem = await MenuItem.findById(itemId);
 
     if (!existingItem) {
       return res.status(404).json({
         status: "error",
-        message: `Food not found`,
+        message: "Food not found",
       });
     }
 
     const existingMenuItemByName = await MenuItem.findOne({
       name: name,
-      _id: { $ne: itemId }, // Виключає поточний ідентифікатор категорії
+      _id: { $ne: itemId },
     });
 
     if (existingMenuItemByName) {
@@ -48,15 +48,21 @@ async function editMenuItem(req, res) {
       });
     }
 
-    // Оновіть дані страви з новими даними, якщо вони були передані
+    // Update data of the menu item
     if (name) existingItem.name = name;
     if (weight) existingItem.weight = weight;
     if (calories) existingItem.calories = calories;
     if (price) existingItem.price = price;
     if (description) existingItem.description = description;
 
-    // Збережіть оновлену страву
+    // Save the updated menu item
     await existingItem.save();
+
+    // Update the name in the favorites array of all users
+    await Users.updateMany(
+      { "favorites.foodName": existingItem.name },
+      { $set: { "favorites.$.foodName": name } }
+    );
 
     return res.status(200).json({
       status: "success",
