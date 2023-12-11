@@ -21,15 +21,9 @@ const setupSocketIO = (server) => {
         return;
       }
       let checkRoom = rooms.find(room => room.table === table);
-      if(checkRoom && checkRoom.users !== email){
+      if(checkRoom){
         socket.emit('busy', { message: `Table ${table} is busy` })
         console.log( `Table ${table} is busy` );
-        return;
-  
-      }
-      if(checkRoom && checkRoom.users === email){
-        socket.emit('returnJoined', { message: `Added to ${table}` })
-        console.log( `Added to ${table}` );
         return;
   
       }
