@@ -10,9 +10,11 @@ const setupSocketIO = (server) => {
 
     // Handle 'addUserToRoom' message
     socket.on('join', async (data) => {
-      const email = data.email; // Assuming the payload contains the email
+      try {
+        const email = data.email; // Assuming the payload contains the email
       const table = data.table; // Assuming the payload contains the table number
       // Check if the user exists in the database
+      console.log("CONNECT DATA",email, table);
       const user = await Users.findOne({ email });
       if (!user) {
         console.log(`User with email ${email} not found. Disconnecting.`);
@@ -40,10 +42,15 @@ const setupSocketIO = (server) => {
         orderStatus: 'created',
         socektId: socket.id
       }
+      
       rooms.push(room);
 
       socket.emit('tableJoined', { message: `Added to ${table}` })
       console.log( `Added to ${table}` );
+      } catch (error) {
+        console.log(error);
+        socket.emit('tableJoined', { message: `Error adding to table: ${error.message}` });
+      }
     });
     socket.on('addFood', async (data) => {
       try{
