@@ -6,7 +6,7 @@ const setupSocketIO = (server) => {
   const io = socketIO(server);
   let rooms = [];
   io.on('connection', async (socket) => {
-    console.log('A user connected');
+    console.log(`A user connected with socket id: ${socket.id}`);
 
     // Handle 'addUserToRoom' message
     socket.on('join', async (data) => {
