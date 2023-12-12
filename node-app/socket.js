@@ -64,26 +64,41 @@ const setupSocketIO = (server) => {
        
 
     })
-    socket.on('removeFood', async (data) => {
-      try{
+    socket.on('removeFood', (data) => {
+      try {
         const email = data.email; // Assuming the payload contains the email
         const table = data.table; // Assuming the payload contains the table number
         const foodId = data.foodId; // Assuming the payload contains the foodId
         console.log(email, table, foodId);
-        let room = rooms.find(room => room.table === table);
-        if(room){
-          let index = room.orders.indexOf(foodId);
-          room.orders.splice(index, 1);
+    
+        // Find the room with the specified table number
+        const room = rooms.find(room => room.table === table);
+    
+        if (room) {
+          // Find the index of the foodId in the orders array
+          const index = room.orders.indexOf(foodId);
+    
+          // Check if the foodId exists in the orders array before removing
+          if (index !== -1) {
+            room.orders.splice(index, 1);
+            console.log('Food removed from orders:', room.orders);
+    
+            // Emit a success message to the client
+            socket.emit('foodRemoved', { message: `Food removed` });
+          } else {
+            console.log('Food not found in orders array.');
+            socket.emit('foodRemoved', { message: `Food not found in orders array` });
+          }
+        } else {
+          console.log('Room not found for table:', table);
+          socket.emit('foodRemoved', { message: `Room not found for table ${table}` });
         }
-        console.log(room);
-        socket.emit('foodRemoved', { message: `Food removed` })
-        console.log( `Food removed` )
-      }catch(error){
-        console.log(error);
+      } catch (error) {
+        console.log('Error:', error);
+        socket.emit('foodRemoved', { message: `Error removing food: ${error.message}` });
       }
-       
-
-    })
+    });
+    
     socket.on('getOrder', async (data) => {
     
       try{
