@@ -130,7 +130,8 @@ const setupSocketIO = (server) => {
         let result = {
           table: room.table,
           status: room.orderStatus,
-          orders: []
+          orders: [],
+          users: room.users
         }
         if(room){
         for(let i = 0; i < room.orders.length; i++){
@@ -276,6 +277,26 @@ const setupSocketIO = (server) => {
         console.log(error);
       }
     })
+    socket.on('deleteOrder', async (data) => {
+      try{        
+        const table = data.table; // Assuming the payload contains the table number
+        console.log(table);
+        let room = rooms.find(room => room.table === table);
+        if(room){
+          // Close the room by removing it from the rooms array
+          const index = rooms.indexOf(room);
+          if (index !== -1) {
+            rooms.splice(index, 1);
+            console.log('Room closed:', room);
+          }
+        }
+        console.log(room);        
+        io.emit('orderDelete', { message: 'Order paid' });
+        console.log(`Order paid`);
+      }catch(error){
+        console.log(error);
+      }
+    })
     socket.on('createOrder', async (data) => {
       try{        
         const table = data.table; // Assuming the payload contains the table number
@@ -373,7 +394,8 @@ const setupSocketIO = (server) => {
           table: room.table,
           status: room.orderStatus,
           chef: room.chef,
-          orders: []
+          orders: [],
+          users: room.users
         }
         if(room){
         for(let i = 0; i < room.orders.length; i++){
@@ -448,14 +470,28 @@ const setupSocketIO = (server) => {
     
 
     socket.on('disconnect', () => {
-      // let room = rooms.find(room => room.socektId === socket.id);
-      // if(room){
-      //   let index = rooms.indexOf(room);
-      //   rooms.splice(index, 1);
-      // }
-      console.log('A user disconnected');
-
+      try {
+        // Find the room associated with the disconnected user's socket id
+        let room = rooms.find(room => room.socektId === socket.id);
+    
+        if (room) {
+          // Check if the room status is 'created'
+          if (room.orderStatus === 'created') {
+            // Remove the room from the rooms array
+            const index = rooms.indexOf(room);
+            if (index !== -1) {
+              rooms.splice(index, 1);
+              console.log(`Room closed due to user disconnecting:`, room);
+            }
+          }
+        }
+    
+        console.log('A user disconnected');
+      } catch (error) {
+        console.log('Error:', error);
+      }
     });
+    
   });
 };
 
