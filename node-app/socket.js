@@ -7,17 +7,20 @@ const setupSocketIO = (server) => {
   const io = socketIO(server);
   let rooms = [];
   io.on('connection', async (socket) => {
-    console.log('A user connected');
+    console.log(`A user connected with socket id: ${socket.id}`);
 
     // Handle 'addUserToRoom' message
     socket.on('join', async (data) => {
-      const email = data.email; // Assuming the payload contains the email
+      try {
+        const email = data.email; // Assuming the payload contains the email
       const table = data.table; // Assuming the payload contains the table number
       const role = data.role; // Assuming the payload contains the role
 
       // Check if the user exists in the database
+
       if(role == 'client'){
         const user = await Users.findOne({ email });
+
       if (!user) {
         console.log(`User with email ${email} not found. Disconnecting.`);
         socket.emit('authenticationFailed', { message: 'User not found' });
@@ -49,12 +52,19 @@ const setupSocketIO = (server) => {
         orderStatus: 'created',
         socektId: socket.id
       }
+      
       rooms.push(room);
 
       socket.emit('tableJoined', { message: `Added to ${table}` })
       console.log( `Added to ${table}` );
+
       }
     
+    } catch (error) {
+      console.log('Error:', error);
+      socket.emit('tableJoined', { message: `Error joining table: ${error.message}` });
+    }
+   
     });
     socket.on('isInRoom', async (data) => {
       try{
@@ -126,26 +136,41 @@ const setupSocketIO = (server) => {
        
 
     })
-    socket.on('removeFood', async (data) => {
-      try{
+    socket.on('removeFood', (data) => {
+      try {
         const email = data.email; // Assuming the payload contains the email
         const table = data.table; // Assuming the payload contains the table number
         const foodId = data.foodId; // Assuming the payload contains the foodId
         console.log(email, table, foodId);
-        let room = rooms.find(room => room.table === table);
-        if(room){
-          let index = room.orders.indexOf(foodId);
-          room.orders.splice(index, 1);
+    
+        // Find the room with the specified table number
+        const room = rooms.find(room => room.table === table);
+    
+        if (room) {
+          // Find the index of the foodId in the orders array
+          const index = room.orders.indexOf(foodId);
+    
+          // Check if the foodId exists in the orders array before removing
+          if (index !== -1) {
+            room.orders.splice(index, 1);
+            console.log('Food removed from orders:', room.orders);
+    
+            // Emit a success message to the client
+            socket.emit('foodRemoved', { message: `Food removed` });
+          } else {
+            console.log('Food not found in orders array.');
+            socket.emit('foodRemoved', { message: `Food not found in orders array` });
+          }
+        } else {
+          console.log('Room not found for table:', table);
+          socket.emit('foodRemoved', { message: `Room not found for table ${table}` });
         }
-        console.log(room);
-        socket.emit('foodRemoved', { message: `Food removed` })
-        console.log( `Food removed` )
-      }catch(error){
-        console.log(error);
+      } catch (error) {
+        console.log('Error:', error);
+        socket.emit('foodRemoved', { message: `Error removing food: ${error.message}` });
       }
-       
-
-    })
+    });
+    
     socket.on('getOrder', async (data) => {
     
       try{
