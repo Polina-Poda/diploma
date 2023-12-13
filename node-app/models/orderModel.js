@@ -8,7 +8,10 @@ const orderSchema = new mongoose.Schema({
     priceMenuItem: Number,
     nameMenuItem: String,
   }],
-  price: Number
+  price: Number,
+  chef: String,
+  waiter: String,
+  user: String,  
 });
 
 // Модель категорій страв

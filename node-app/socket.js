@@ -1,6 +1,8 @@
 const socketIO = require('socket.io');
 const { Users } = require('./models/userModel');
 const { MenuItem } = require("./models/foodModel");
+const { Order} = require("./models/orderModel");
+const { Workers } = require("./models/workerModel");
 const e = require('cors');
 
 const setupSocketIO = (server) => {
@@ -58,7 +60,47 @@ const setupSocketIO = (server) => {
       socket.emit('tableJoined', { message: `Added to ${table}` })
       console.log( `Added to ${table}` );
 
+      }else if(role == 'staff'){
+        const user = await Workers.findOne({ email });
+
+      if (!user) {
+        console.log(`User with email ${email} not found. Disconnecting.`);
+        socket.emit('authenticationFailed', { message: 'User not found' });
+        socket.disconnect(true);
+        return;
       }
+      let checkRoom = rooms.find(room => room.table === table);
+      if(checkRoom){
+        if(checkRoom.waiter === email){
+          socket.emit('returnStaff', { message: `lol` })
+          
+          return;
+        }else{
+          socket.emit('busyStaff', { message: `Table ${table} is busy` })
+          console.log( `Table ${table} is busy` );
+          return;
+        }
+      }
+      
+      // Add the user to a room (you can customize the room name as needed)
+      
+      socket.join(table);
+      let room = {
+        table: table,
+        users: '',
+        waiter: email,
+        chef: '',
+        orders: [],
+        orderStatus: 'created',
+        socektId: socket.id
+      }
+      
+      rooms.push(room);
+
+      socket.emit('tableJoinedStaff', { message: `Added to ${table}` })
+      console.log( `Added to ${table}` );
+      }
+
     
     } catch (error) {
       console.log('Error:', error);
@@ -87,6 +129,7 @@ const setupSocketIO = (server) => {
         let room = rooms.find(room => room.waiter === email);
         let result = {
           table: room.table,
+          status: room.orderStatus,
           orders: []
         }
         if(room){
@@ -176,7 +219,7 @@ const setupSocketIO = (server) => {
       try{
         const email = data.email; // Assuming the payload contains the email
         const table = data.table; // Assuming the payload contains the table number
-        console.log(email, table);
+        
         let room = rooms.find(room => room.table === table);
         let summary = 0;
         let newArray =[]
@@ -227,6 +270,21 @@ const setupSocketIO = (server) => {
         console.log(error);
       }
     })
+    socket.on('moveToKitchen', async (data) => {
+      try{        
+        const table = data.table; // Assuming the payload contains the table number
+        console.log( table);
+        let room = rooms.find(room => room.table === table);
+        if(room){
+          room.orderStatus = 'cooking';
+        }
+        console.log(room);
+        io.emit('movedToKitchen', { message: 'Order moved to kitchen' });
+        console.log( `Order moved to kitchen` )
+      }catch(error){
+        console.log(error);
+      }
+    })
     socket.on('getOrdered', async (data) => {
       try{        
         let orderedOrders = rooms.filter(room => room.orderStatus === 'ordered');
@@ -235,7 +293,8 @@ const setupSocketIO = (server) => {
           let order = orderedOrders[i];
           let result = {
             table: order.table,
-            orders: []
+            orders: [],
+            waiter: order.waiter
           }
           for(let j = 0; j < order.orders.length; j++){
             let food = await MenuItem.findById({ _id: order.orders[j] });
@@ -248,6 +307,121 @@ const setupSocketIO = (server) => {
         console.log(error);
       }
     })
+    socket.on('getCooking', async (data) => {
+      try{        
+        let cookingOrders = rooms.filter(room => room.orderStatus === 'cooking');
+        var newArray = [];
+        for(let i = 0; i < cookingOrders.length; i++){
+          let order = cookingOrders[i];
+          let result = {
+            table: order.table,
+            chef: order.chef,
+            orders: []
+          }
+          for(let j = 0; j < order.orders.length; j++){
+            let food = await MenuItem.findById({ _id: order.orders[j] });
+            result.orders.push(food);
+          }
+          newArray.push(result);
+        }
+        socket.emit('cookingOrders', newArray);
+      }catch(error){
+        console.log(error);
+      }
+    })
+    socket.on('chefJoin', async (data) => {
+      try{
+        const email = data.email; // Assuming the payload contains the email
+        const table = data.table; // Assuming the payload contains the table number
+        let room = rooms.find(room => room.table === table);
+        if(room){
+          room.chef = email;
+        }
+        console.log(room);
+        socket.emit('chefJoined', { message: `Added to ${table}` })
+        console.log( `Added to ${table}` )
+      }catch(error){
+        console.log(error);
+      }
+    })
+    socket.on('getChefInfo', async (data) => {
+      try{
+        const email = data.email; // Assuming the payload contains the email       
+        let room = rooms.find(room => room.chef === email);
+        let result = {
+          table: room.table,
+          status: room.orderStatus,
+          chef: room.chef,
+          orders: []
+        }
+        if(room){
+        for(let i = 0; i < room.orders.length; i++){
+          let food = await MenuItem.findById({ _id: room.orders[i] });
+          result.orders.push(food);
+        }
+      }
+        socket.emit('roomInfo', result)
+        
+        
+      }catch(error){
+        console.log(error);
+      }
+    })
+    socket.on('isChefInRoom', async (data) => {
+      try{
+        const email = data.email; // Assuming the payload contains the email       
+        let room = rooms.find(room => room.chef === email);
+        if(room){
+          socket.emit('return', true)
+        }else{
+          socket.emit('return', false)
+        }
+        
+        
+      }catch(error){
+        console.log(error);
+      }
+    })
+    socket.on('markAsReady', async (data) => {
+      try{        
+        const table = data.table; // Assuming the payload contains the table number
+        console.log( table);
+        let room = rooms.find(room => room.table === table);
+        if(room){
+          room.orderStatus = 'ready';
+          let orderData = {
+            items: [],
+            price: 0,
+            chef: room.chef,
+            waiter: room.waiter,
+            user: room.users
+          }
+          for(let i = 0; i < room.orders.length; i++){
+            let food = await MenuItem.findById({ _id: room.orders[i] });
+            orderData.items.push({
+              idMenuItem: food._id,
+              priceMenuItem: food.price,
+              nameMenuItem: food.name
+            });
+            orderData.price += food.price;
+            // Create a new Order document and save it to the database
+        }
+        const newOrder = new Order(orderData);
+            await newOrder.save();
+
+            room.chef = '';
+            
+
+          }            
+
+        console.log(room);
+        io.emit('markedAsReady', { message: 'Order marked as ready' });
+        console.log( `Order marked as ready` )
+      }catch(error){
+        console.log(error);
+      }
+    })
+
     
     // Example: Broadcasting a message to all connected clients
     
