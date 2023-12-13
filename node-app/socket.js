@@ -255,6 +255,27 @@ const setupSocketIO = (server) => {
       }
 
     })
+    socket.on('paidOrder', async (data) => {
+      try{        
+        const table = data.table; // Assuming the payload contains the table number
+        console.log(table);
+        let room = rooms.find(room => room.table === table);
+        if(room){
+          // Close the room by removing it from the rooms array
+          const index = rooms.indexOf(room);
+          if (index !== -1) {
+            rooms.splice(index, 1);
+            console.log('Room closed:', room);
+          }
+        }
+        console.log(room);
+        socket.emit('returnPaid', { message: 'Order paid' });
+        io.emit('orderPaid', { message: 'Order paid' });
+        console.log(`Order paid`);
+      }catch(error){
+        console.log(error);
+      }
+    })
     socket.on('createOrder', async (data) => {
       try{        
         const table = data.table; // Assuming the payload contains the table number
