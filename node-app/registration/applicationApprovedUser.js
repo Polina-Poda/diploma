@@ -1,11 +1,14 @@
+const e = require("cors");
 const { Workers } = require("../models/workerModel");
 const bcrypt = require("bcrypt");
 
 async function applicationApprovedUser(req, res) {
   try {
     const { email, password, duplicatePassword } = req.body;
-    if (!email || !password || !duplicatePassword)
+    if (!email || !password || !duplicatePassword){
+      console.log(email, password, duplicatePassword)
       return res.status(400).json({ message: "Not all fields are filled" });
+    }
 
       const checkEmail = await Workers.findOne({ email: email });
         if (!checkEmail) {

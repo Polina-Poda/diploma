@@ -23,7 +23,7 @@ async function getToken(req, res) {
         message: "Email not found",
       });
     }
-    await Tokens.findOneAndDelete({ token: token.token });
+    // await Tokens.findOneAndDelete({ token: token.token });
     
 
     return res.status(201).json({
