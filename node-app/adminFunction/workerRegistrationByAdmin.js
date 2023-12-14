@@ -108,7 +108,7 @@ async function workerRegistrationByAdmin(req, res) {
             <p>Для входу натисніть на кнопку</p>
             <div>
                 <!--cta button-->
-                <a href="${process.env.WEB_LINK}/application_approved/${token}" target="_blank" class="btn">
+                <a href="${process.env.WEB_LINK}/application_approved?token=${token}" target="_blank" class="btn">
                     <!--[if mso]>&nbsp;&nbsp;&nbsp;&nbsp;<![endif]-->Activate account<!--[if mso]>&nbsp;&nbsp;&nbsp;&nbsp;<![endif]-->
                 </a>
             </div>
