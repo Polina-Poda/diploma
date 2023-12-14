@@ -26,18 +26,8 @@ const io = require('socket.io')(server,
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended : true }));
-app.use(express.json())
-const cors = require('cors');
-app.options('*', cors());
-const corsOptions = {
-  credentials: true,
-   origin:'*',
-};
 
-app.use(cors(corsOptions));
-
-app.use("/",cors(corsOptions),router)
+app.use(router);
 
 // Configure Socket.IO
 // setupSocketIO(http);
