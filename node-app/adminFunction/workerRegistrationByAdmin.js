@@ -1,4 +1,5 @@
 const { Workers } = require("../models/workerModel");
+const { Tokens } = require("../models/tokenModel");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 
@@ -56,8 +57,14 @@ async function workerRegistrationByAdmin(req, res) {
       workerFirstName: workerFirstName,
       workerLastName: workerLastName,
     });
+    const tokenModel = new Tokens({
+      token: token,
+      email: workerEmail,
+    });
+
 
     await worker.save();
+    await tokenModel.save();
     let role = "";
     if (newRole === "admin") {
       role = "адміністратора";
@@ -101,7 +108,7 @@ async function workerRegistrationByAdmin(req, res) {
             <p>Для входу натисніть на кнопку</p>
             <div>
                 <!--cta button-->
-                <a href="${process.env.WEB_LINK}/application_approved?token=${token}" target="_blank" class="btn">
+                <a href="${process.env.WEB_LINK}/application_approved/${token}" target="_blank" class="btn">
                     <!--[if mso]>&nbsp;&nbsp;&nbsp;&nbsp;<![endif]-->Activate account<!--[if mso]>&nbsp;&nbsp;&nbsp;&nbsp;<![endif]-->
                 </a>
             </div>
