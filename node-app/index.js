@@ -30,17 +30,14 @@ app.use(express.urlencoded({ extended : true }));
 app.use(express.json())
 const cors = require('cors');
 app.options('*', cors());
+const corsOptions = {
+  credentials: true,
+   origin:'*',
+};
 
-// Enable CORS for all routes
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "https://vue-js-rest.onrender.com");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   next();
-// });
+app.use(cors(corsOptions));
 
-// Use the router
-app.use(router);
+app.use("/",cors(corsOptions),router)
 
 // Configure Socket.IO
 // setupSocketIO(http);
