@@ -17,14 +17,13 @@ async function sendEmail(req, res) {
     
 
 
-    sendRoleEditing(newMail, "sdemchenko70@gmail.com");
+    sendFeedbackEmail(newMail);
 
     res.status(200).json({
-      status: "success",
-      message: "Worker was successfully registered",
-      token: token,
+      status: "success",      
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: "error",
       message: err.message,
@@ -34,29 +33,28 @@ async function sendEmail(req, res) {
 
 
 
-async function sendRoleEditing(text, userEmail) {
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
+async function sendFeedbackEmail(feedbackText) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
       auth: {
-        user: "polinapoda5@gmail.com",
-        pass: "jurp wecg svpk irsd",
+        user: 'polinapoda5@gmail.com',
+        pass: 'jurp wecg svpk irsd',
       },
     });
   
-    var mailOptions = {
-      from: "Restaurant Menu <polinapoda5@gmail.com>",
-      to: userEmail,
-      subject: "Application approved ",
-      html: text,
+    const mailOptions = {
+      from: 'Restaurant Menu <polinapoda5@gmail.com>',
+      to: 'polinapoda5@gmail.com', // Replace with your email address
+      subject: 'Feedback',
+      html: feedbackText,
     };
   
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Email sent: ' + info.response);
+    } catch (error) {
+      console.error(error);
+    }
   }
   
   module.exports.sendEmail = sendEmail;
