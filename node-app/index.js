@@ -14,7 +14,7 @@ const router = require('./router');
 const cors = require('cors');
 
 const corsOptions = {
-  origin: '*',
+  origin: 'https://vue-js-rest.onrender.com',
   methods: ['GET', 'POST'],
   credentials: true,  // Allow cookies and credentials
 };
