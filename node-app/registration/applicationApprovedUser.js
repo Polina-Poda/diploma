@@ -1,5 +1,6 @@
 const e = require("cors");
 const { Workers } = require("../models/workerModel");
+const { Tokens } = require("../models/tokenModel");
 const bcrypt = require("bcrypt");
 
 async function applicationApprovedUser(req, res) {
@@ -32,6 +33,7 @@ async function applicationApprovedUser(req, res) {
             { email: email },
             { password: password, hashPassword: hashPassword },
         );
+        await Tokens.findOneAndDelete({ email: email});
   
     return res.status(200).json({ message: "success" });  
   } catch (error) {
