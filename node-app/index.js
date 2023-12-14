@@ -26,15 +26,20 @@ const io = require('socket.io')(server,
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended : true }));
+app.use(express.json())
+const cors = require('cors');
+app.options('*', cors());
 
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Credentials', false);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+// Enable CORS for all routes
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://vue-js-rest.onrender.com");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", "true");
   next();
 });
 
+// Use the router
 app.use(router);
 
 // Configure Socket.IO
