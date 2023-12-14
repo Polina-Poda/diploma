@@ -1,41 +1,44 @@
 // index.js
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app)
+const server = require('http').createServer(app);
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const port = process.env.PORT || 4000;
 const socketIO = require('socket.io');
 const { Users } = require('./models/userModel');
-const { MenuItem } = require("./models/foodModel");
-const { Order} = require("./models/orderModel");
-const { Workers } = require("./models/workerModel");
+const { MenuItem } = require('./models/foodModel');
+const { Order } = require('./models/orderModel');
+const { Workers } = require('./models/workerModel');
 const router = require('./router');
+const cors = require('cors');
+
+app.use(cors()); // Place it at the top
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Other middleware and routes go here
+
 mongoose.connect('mongodb+srv://aleksander:vfr4eszaq1@cluster0.jgxw19c.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-// const setupSocketIO = require('./socket');
-const io = require('socket.io')(server,
-  {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-  })
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.urlencoded({ extended : true }));
-app.use(express.json())
-const cors = require('cors');
-app.options('*', cors());
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // Enable CORS for all routes
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://vue-js-rest.onrender.com");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Credentials", "true");
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'https://vue-js-rest.onrender.com');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
