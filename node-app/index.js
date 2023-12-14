@@ -13,7 +13,13 @@ const { Workers } = require('./models/workerModel');
 const router = require('./router');
 const cors = require('cors');
 
-app.use(cors()); // Place it at the top
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST'],
+  credentials: true,  // Allow cookies and credentials
+};
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
