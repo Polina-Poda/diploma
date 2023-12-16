@@ -1,5 +1,6 @@
 const { MenuItem } = require("../models/foodModel");
-const { Users, Workers } = require("../models/workerModel");
+const { Workers } = require("../models/workerModel");
+const { Users } = require("../models/userModel");
 
 async function editMenuItem(req, res) {
   try {
